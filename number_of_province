@@ -1,0 +1,25 @@
+void solve(int V, vector<vector<int>> adj,vector<bool> &vis)
+    {
+        vis[V]=true;
+        for(int i=0;i<adj[V].size();i++)
+        {
+            if(vis[i]==false && adj[V][i]==1)
+            {
+                solve(i,adj,vis);
+            }
+        }
+    }
+    int numProvinces(vector<vector<int>> adj, int V) {
+        // code here
+        vector<bool>vis(V,false);
+        int count=0;
+        for(int i=0;i<V;i++)
+        {
+            if(!vis[i])
+            {
+                count++;
+                solve(i,adj,vis);
+            }
+        }
+        return count;
+    }
