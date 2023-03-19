@@ -1,0 +1,40 @@
+count of outdegree and topological sorting concept
+vector<int> eventualSafeNodes(int V, vector<int> adj[]) {
+        // code here
+        vector<int>outdegree(V,0);
+        vector<int>revadj[V];
+        for(int i=0;i<V;i++)
+        {
+            for(auto it:adj[i])
+            {
+                revadj[it].push_back(i);
+                outdegree[i]++;
+            }
+        }
+        vector<int>ans;
+        queue<int>q;
+        for(int i=0;i<V;i++)
+        {
+            if(outdegree[i]==0)
+            {
+                q.push(i);
+            }
+        }
+        while(!q.empty())
+        {
+            int f=q.front();
+            ans.push_back(f);
+            q.pop();
+            for(auto it:revadj[f])
+            {
+                outdegree[it]--;
+                if(outdegree[it]==0)
+                {
+                    q.push(it);                
+                    
+                }
+            }
+        }
+         sort(ans.begin(),ans.end());
+        return ans;
+    }
