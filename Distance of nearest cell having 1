@@ -1,0 +1,53 @@
+vector<vector<int>>nearest(vector<vector<int>>grid)
+	{
+	    // Code here
+	    int r=grid.size();
+	    int c=grid[0].size();
+	    queue<pair<pair<int,int>,int>>q;
+	    vector<vector<int>>ans(r,vector<int>(c,0));
+	    vector<vector<int>>vis(r,vector<int>(c,0));
+	    for(int i=0;i<r;i++)
+	    {
+	        for(int j=0;j<c;j++)
+	        {
+	            if(grid[i][j]==1)
+	            {
+	                q.push(make_pair(make_pair(i,j),0));
+	               vis[i][j]=1;
+	            }
+	        }
+	    }
+	    while(!q.empty())
+	    {
+	        int i=q.front().first.first;
+	        int j=q.front().first.second;
+	        int step=q.front().second;
+	        q.pop();
+	        if(i-1>=0 && vis[i-1][j]==0 && grid[i-1][j]==0)
+	        {
+	            ans[i-1][j]=step+1;
+	            vis[i-1][j]=1;
+	            q.push(make_pair(make_pair(i-1,j),step+1));
+	        }
+	        if(i+1<r && vis[i+1][j]==0 && grid[i+1][j]==0)
+	        {
+            ans[i+1][j]=step+1;
+            q.push(make_pair(make_pair(i+1,j),step+1));
+            vis[i+1][j]=1;
+	        }
+        if(j-1>=0 && vis[i][j-1]==0 && grid[i][j-1]==0)
+        {
+            ans[i][j-1]=step+1;
+            q.push(make_pair(make_pair(i,j-1),step+1));
+            vis[i][j-1]=1;
+        }
+        if(j+1<c && vis[i][j+1]==0 && grid[i][j+1]==0)
+        {
+            ans[i][j+1]=step+1;
+            q.push(make_pair(make_pair(i,j+1),step+1));
+            vis[i][j+1]=1;
+        }
+	    }
+	    return ans;
+	}
+  reference:https://github.com/anandsagar00/Advanced-Data-Structures-And-Algorithm/blob/main/009%20Graph/nearest_cell_having_1.cpp
