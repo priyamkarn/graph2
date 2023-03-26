@@ -1,0 +1,68 @@
+int orangesRotting(vector<vector<int>>& grid) {
+        // Code here
+        queue<pair<int,int>>q;
+        int m=grid.size();
+        int n=grid[0].size();
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(grid[i][j]==2)
+                {
+                    q.push(make_pair(i,j));
+                }
+            }
+        }
+        int ans=0;
+        while(!q.empty())
+        {
+            int s=q.size();
+            bool flag=false;
+            for(int i=0;i<s;i++)
+            {
+                int v1=q.front().first;
+                int v2=q.front().second;
+                q.pop();
+                if(v1-1>=0 && grid[v1-1][v2]==1)
+                {
+                    grid[v1-1][v2]=2;
+                    q.push(make_pair(v1-1,v2));
+                    flag=true;
+                }
+                if(v1+1<m && grid[v1+1][v2]==1)
+                {
+                    grid[v1+1][v2]=2;
+                     q.push(make_pair(v1+1,v2));
+                     flag=true;
+                }
+                if(v2-1>=0 && grid[v1][v2-1]==1)
+                {
+                    grid[v1][v2-1]=2;
+                    q.push(make_pair(v1,v2-1));
+                    flag=true;
+                }
+                if(v2+1<n && grid[v1][v2+1]==1)
+                {
+                    grid[v1][v2+1]=2;
+                    q.push(make_pair(v1,v2+1));
+                    flag=true;
+                }
+            }
+            if(flag==true)
+            {
+                ans++;
+            }
+        }
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    return -1;
+                }
+            }
+        }
+        return ans;
+    }
+    reference:https://github.com/anandsagar00/Advanced-Data-Structures-And-Algorithm/blob/main/009%20Graph/rottenOranges.cpp
