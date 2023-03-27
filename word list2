@@ -1,0 +1,60 @@
+ vector<vector<string>> findLadders(string startWord, string targetWord, vector<string>& wordList) {
+        unordered_map<string, int> ump;
+        for (auto &it : wordList)
+        {
+            ump[it]=0;
+        }
+        vector<vector<string>> ans;
+        queue<vector<string>> q;
+         vector<string> temp;
+         temp.push_back(startWord);
+         ump[startWord] = 1;
+         q.push(temp);
+          while (!q.empty())
+    {
+        // I will create a vector which would store all words to be marked as visited on this level
+        vector<string> to_be_erased;
+        int s = q.size();
+        //I will be storing all the words to be erased after this level finishes
+        for (int t = 1; t <= s; t++)
+        {
+            vector<string> sequence = q.front();
+            q.pop();
+            string last_word = sequence.back();
+            // if the last word is the target word then we will push sequence to ans
+            if (last_word == targetWord)
+            {
+                if (ans.size() == 0)
+                    ans.push_back(sequence);
+                else if (ans.size() != 0 && ans[0].size() == sequence.size())
+                {
+                    ans.push_back(sequence);
+                }
+                continue; // continuing as the first one we meet will be smallest and we don't need further processing on that
+            }
+            // I will try to change each letter at each index from 'a' - 'z' and will push it to the queue
+            // only if it is present in the ump and has not been visited yet
+            for (int i = 0; i < last_word.length(); i++)
+            {
+                char orig_ch = last_word[i]; // this is storing the original char
+                for (char j = 'a'; j <= 'z'; j++)
+                {
+                    last_word[i] = j;
+                    // this is checking if last word is there in word list and it is not in current sequence
+                    if (ump.find(last_word) != ump.end() && ump[last_word] == 0)
+                    {
+                        to_be_erased.push_back(last_word);
+                        sequence.push_back(last_word);
+                        q.push(sequence); // inserting sequence into queue and popping back for next use
+                        sequence.pop_back();
+                    }
+                }
+                last_word[i] = orig_ch; // I am putting back the original character , so that next letters can be replaced , without affecting the previous letters
+            }
+        }
+        for (auto &it : to_be_erased)
+            ump[it] = 1;
+    }
+    return ans;
+}
+};
