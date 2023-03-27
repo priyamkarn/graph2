@@ -1,0 +1,41 @@
+int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+         unordered_map<string,int> ump;
+         for(auto &it:wordList)
+         {
+             ump[it]=0;
+         }
+         queue<pair<string,int>>q;
+         q.push(make_pair(beginWord,1));
+         if(ump.find(beginWord)!=ump.end())
+         {
+             ump[beginWord]=1;
+         }
+         while(!q.empty())
+         {
+             string word=q.front().first;
+             int step=q.front().second;
+             q.pop();
+             if(word==endWord)
+             {
+                 return step;
+             }
+
+             for(int i=0;i<word.length();i++)
+             {
+                 char orig_ch=word[i];//this is storing the original char
+                 for(char j='a';j<='z';j++)
+                 {
+                     word[i]=j;
+                     if(ump.find(word)!=ump.end() && ump[word]==0)
+                 {
+                     ump[word]=1;
+                     q.push(make_pair(word,step+1));
+                }
+            }
+            word[i]=orig_ch;//I am putting back the original character , 
+            //so that next letters can be replaced , 
+            //without affecting the previous letters
+        }
+         }
+         return 0;
+    }
