@@ -1,0 +1,63 @@
+void DFS(vector<vector<int> > &arr,int i,int j,int r,int c,int &count)
+{
+    if(i<0 || j<0 || i>=r || j>=c || arr[i][j]!=1)
+    return;
+    arr[i][j]=0;
+    count+=1;
+    DFS(arr,i,j-1,r,c,count);
+    DFS(arr,i,j+1,r,c,count);
+    DFS(arr,i-1,j,r,c,count);
+    DFS(arr,i+1,j,r,c,count);
+}
+    int numberOfEnclaves(vector<vector<int>> &grid) {
+        // Code here
+        int r=grid.size();
+        int c=grid[0].size();
+        int total=0;
+        for(int i=0;i<r;i++)
+        {
+            for(int j=0;j<c;j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    total+=grid[i][j];
+                }
+            }
+            
+        }
+        int count=0;
+    //Left boundary
+    for(int i=0;i<r;i++)
+    {
+        if(grid[i][0]==1)
+        {
+            DFS(grid,i,0,r,c,count);
+        }
+    }
+    //Right boundary
+    for(int i=0;i<r;i++)
+    {
+        if(grid[i][c-1]==1)
+        {
+            DFS(grid,i,c-1,r,c,count);
+        }
+    }
+    //Top boundary
+    for(int i=0;i<c;i++)
+    {
+        if(grid[0][i]==1)
+        {
+            DFS(grid,0,i,r,c,count);
+        }
+    }
+    //Bottom boundary
+    for(int i=0;i<c;i++)
+    {
+        if(grid[r-1][i]==1)
+        {
+            DFS(grid,r-1,i,r,c,count);
+        }
+    }
+    return total-count;
+    }
+};
