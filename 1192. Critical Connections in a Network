@@ -1,0 +1,41 @@
+firstTime stores the time when a node is first discovered during a special search of the graph called depth-first search. 
+Think of this like exploring a maze - when you first enter a new room, you note down the time when you entered it.
+minTime stores the smallest firstTime value of all the nodes that can be reached from the current node.
+Imagine that you're exploring a maze, and you keep track of the earliest time you entered any room that is connected to the room you're currently in.
+if the minTime value of the child node is greater than the firstTime value of the parent node, it means that the child node was not visited 
+before the parent node during the depth-first search.
+This indicates that the edge connecting the parent and child nodes is not a part of any cycle in the graph.
+vector<vector<int>> ans;
+	vector<vector<int>> graph;
+
+	vector<int> firstTime, minTime, visited;
+	int time = 1;
+
+	void dfs(int node, int parent = -1) {
+		firstTime[node] = minTime[node] = time++;
+		visited[node] = true;
+
+		for(auto& child : graph[node]) {
+			if(child == parent)
+				continue;
+
+			if(!visited[child]) 
+				dfs(child, node);
+
+			minTime[node] = min(minTime[child], minTime[node]);
+
+			if(firstTime[node] < minTime[child])
+				ans.push_back({node, child});
+		}
+	}
+
+	vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+		firstTime.resize(n), minTime.resize(n), visited.resize(n), graph.resize(n);
+		for(auto& edge : connections) {
+			int nodeA = edge[0], nodeB = edge[1];
+			graph[nodeA].push_back(nodeB);
+			graph[nodeB].push_back(nodeA);
+		}
+		dfs(0);
+		return ans;
+	}
