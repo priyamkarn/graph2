@@ -1,0 +1,32 @@
+ vector<int> v[2005];
+        for(auto it:edges){
+            v[it[0]].push_back(it[1]);
+            v[it[1]].push_back(it[0]);
+        }
+        int ans=1e9;
+        for(int i=0;i<n;i++)
+        {
+            queue<int>q;
+            vector<int>dis(n+1,1e9);
+            dis[i]=0;
+            q.push(i);
+            while(!q.empty())
+            {
+                int it=q.front();
+                q.pop();
+                for(auto child:v[it])
+                {
+                    if(dis[child]==1e9)
+                    {
+                        dis[child]=dis[it]+1;
+                        q.push(child);
+                    }
+                    else if(dis[child]>=dis[it])
+                    {
+                        ans=min(ans,dis[it]+dis[child]+1);
+                    }
+                }
+            }
+        }
+         if(ans==1e9)ans=-1;
+        return ans;
