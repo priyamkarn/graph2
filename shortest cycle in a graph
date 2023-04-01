@@ -20,6 +20,7 @@ public:
                         parent[neigh] = node;
                         q.push(neigh);
                 }
+                use paper pen and call bfs for square to get below line
                 else if (parent[node] != neigh && parent[neigh] != node)
                     ans = min(ans, distance[neigh] + distance[node] + 1);
                 }
