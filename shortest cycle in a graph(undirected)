@@ -1,49 +1,47 @@
-class Solution
-{
+class Solution {
 public:
-    
     int ans = INT_MAX;
-
-    void bfs(int src,vector<int> adj[],int n){
-            vector<int> distance(n,(1e9));
-            vector<int> parent(n, -1);
-            
-            queue<int> q;
-            distance[src] = 0;
-            q.push(src);
-            while (!q.empty()) {
-                int node = q.front();
-                q.pop();
-                for (auto neigh : adj[node]) {
-                    if (distance[neigh] == (int)(1e9)) {
-                        distance[neigh] = 1 + distance[node];
-                        parent[neigh] = node;
-                        q.push(neigh);
-                }
-                use paper pen and call bfs for square to get below line
-                else if (parent[node] != neigh && parent[neigh] != node)
-                    ans = min(ans, distance[neigh] + distance[node] + 1);
-                }
-            }
+    void dfs(int node, int parent, vector<bool>&vis, vector<vector<int>>&adj,  unordered_map<int, int>&mp){
+        vis[node] = 1;
+         
+         for(auto child : adj[node]){
+             if(child != parent && !vis[child]){
+                 mp[child] = mp[node] + 1;
+                 dfs(child, node, vis, adj, mp);
+             }
+             else if(child != parent && vis[child] == 1){
+                 ans = min(ans,abs(mp[node] - mp[child]) + 1);
+             }
+         }
+        
     }
-    int findShortestCycle(int n, vector<vector<int>> &edges)
-    {
 
-        vector<int> adj[n + 1];
-        for (auto it : edges)
-        {
-            int u = it[0];
-            int v = it[1];
-            adj[u].push_back(v);
-            adj[v].push_back(u);
+
+    int findShortestCycle(int n, vector<vector<int>>& edges) {
+        if( n == 0)
+        return -1;
+        vector<vector<int>>adj(n);
+
+        for(auto it : edges){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
         }
-      
-        for (int i = 0; i < n; i++)
-        {
-            bfs(i,adj,n);
-        }
-        if (ans == INT_MAX)
-            return -1;
-        return ans;
+    
+   
+    for(int i = 0; i<n; i++){
+           vector<bool>vis(n);
+           if(!vis[i]){
+                
+               unordered_map<int, int>mp;
+                mp[i] = 1;
+               dfs(i, -1, vis, adj, mp);
+
+           }
+    }
+    if( ans == INT_MAX)
+    return -1;
+    return ans;
+
+
     }
 };
