@@ -31,3 +31,62 @@ public:
         return count;
     }
 };
+//bfs 
+class Solution {
+public:
+    int r,c;
+    void bfs(int i,int j,vector<vector<int>>& grid){
+       grid[i][j]=1;
+        queue<pair<int,int>>q;
+        
+        q.push({i,j});
+        
+        
+        while(!q.empty()){
+            pair<int,int>p=q.front();
+            int x=p.first;
+            int y=p.second;
+            q.pop();
+            
+            vector<pair<int,int>>nbrs={{0,1},{0,-1},{1,0},{-1,0}};
+            for(auto nbr:nbrs){
+                int newx=x+nbr.first;
+                int newy=y+nbr.second;
+                
+                if(newx>=0 and newy>=0 and newx<r and newy<c  and grid[newx][newy]==0){
+                    grid[newx][newy]=1;
+                    q.push({newx,newy});
+                }
+            }
+        }
+    }
+    int closedIsland(vector<vector<int>>& grid) {
+        r=grid.size();
+        c=grid[0].size();
+        int ans=0;
+      
+      //boundary bfs  
+      for(int i=0;i<r;i++){
+         for(int j=0;j<c;j++){
+             if(i*j==0 or i==r-1 or j==c-1){
+                if(grid[i][j]==0){
+                    bfs(i,j,grid);
+                }
+             }
+         }
+     }   
+    
+        //bfs
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                if(grid[i][j]==0){
+                    bfs(i,j,grid);
+                    ans++;
+                }
+                
+            }
+        }
+        return ans;
+    }
+    
+};
