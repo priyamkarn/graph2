@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int n;
+    vector<int> vis;
+    //Same as no of ISalands and can be aslo done with union find algorithm (DSU)
+    void dfs(int idx,vector<vector<int>> &stones){
+        //we can go from stone A to stone B if and only if A and B have common row ///or column)
+        vis[idx] = true;
+        for(int i=0;i<n;i++){
+            if(vis[i]) continue;
+            if(stones[idx][0] == stones[i][0] || stones[idx][1] == stones[i][1]){
+                dfs(i,stones);
+            }
+        }
+        return;
+    }
+    int removeStones(vector<vector<int>>& stones) {
+        n = stones.size();
+        vis.resize(n,0);
+        int val = 0;
+        for(int i=0;i<n;i++){
+            if(vis[i]) continue;
+            val++;
+            dfs(i,stones);
+        }
+        //ek group me agr x1 h to last me 1 bachega to remove x1-1 hoga
+        //x1+x2+x3+x4=n
+        //(x1-1)+(x2-1)+(x3-1)+(x4-1)=n-no of connected component.
+        return n - val;
+    }
+};
