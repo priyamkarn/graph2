@@ -1,0 +1,35 @@
+class Solution {
+public:
+int ans=0;
+void dfs(int src,int currtime,int currvalue,int mxt,vector<int>&value,vector<pair<int,int>> adj[])
+{
+    if(currtime>mxt)
+    {
+        return;
+    }
+    //consider we are in 0 so 0-0.
+    currvalue+=value[src];
+    if(src==0)
+    {
+        ans=max(ans,currvalue);
+    }
+    int temp=value[src];
+    value[src]=0;
+    for(auto x:adj[src])
+    {
+        dfs(x.first,currtime+x.second,currvalue,mxt,value,adj);
+    }
+    value[src]=temp;
+}
+    int maximalPathQuality(vector<int>& values, vector<vector<int>>& edges, int maxTime) {
+        int n=values.size();
+        vector<pair<int,int>>adj[n];
+        for(auto e:edges)
+        {
+            adj[e[0]].push_back(make_pair(e[1],e[2]));
+            adj[e[1]].push_back(make_pair(e[0],e[2]));
+        }
+        dfs(0,0,0,maxTime,values,adj);
+        return ans;
+    }
+};
