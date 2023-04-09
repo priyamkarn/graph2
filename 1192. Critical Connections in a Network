@@ -26,6 +26,8 @@ vector<vector<int>> ans;
 
 			if(firstTime[node] < minTime[child])
 				ans.push_back({node, child});
+				else
+			minTime[node] = min(minTime[child], minTime[node]);
 		}
 	}
 
