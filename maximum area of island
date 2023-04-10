@@ -1,0 +1,50 @@
+class Solution {
+public:
+   int dfs(vector<vector<int>>& grid,int i,int j,int r,int c)
+    {
+        if(i < 0 || j < 0 || i >= r || j >= c || grid[i][j] == 0)
+        {
+            return 0;
+        }
+        grid[i][j] = 0;
+        return 1 + dfs(grid, i + 1, j, r, c)+dfs(grid, i - 1, j, r, c)+dfs(grid, i, j + 1, r, c)+dfs(grid, i, j - 1, r, c);
+    }
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        int r=grid.size();
+        int c=grid[0].size();
+        int ans=0;
+        for(int i=0;i<r;i++)
+        {
+            int temp=0;
+            for(int j=0;j<c;j++)
+            {
+                temp=dfs(grid,i,j,r,c);
+                ans=max(ans,temp);
+            }
+        }
+        return ans;
+    }
+};
+2.void computeArea(vector<vector<int>>& grid, int i, int j, int& a) {
+        int m = grid.size(), n = grid[0].size();
+        if (i >= 0 && i < m && j >= 0 && j < n && grid[i][j]) {
+            a++;
+            grid[i][j] = 0;            
+            computeArea(grid, i - 1, j, a);
+            computeArea(grid, i + 1, j, a);
+            computeArea(grid, i, j - 1, a);
+            computeArea(grid, i, j + 1, a);
+        }
+    }
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        int m = grid.size(), n = m ? grid[0].size() : 0, area = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j]) {
+                    int a = 0;
+                    computeArea(grid, i, j, a);
+                    area = max(area, a);
+                }
+            }
+        }
+        return area;
