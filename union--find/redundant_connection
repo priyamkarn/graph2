@@ -1,0 +1,68 @@
+class disjoint
+{
+    public:
+    vector<int>parent;
+    vector<int>size;
+    disjoint(int n)
+    {
+        parent.resize(n+1);
+        size.resize(n+1);
+        for(int i=0;i<n;i++)
+        {
+            parent[i]=i;
+            size[i]=1;
+        }
+    }
+    int findd(int u)
+    {
+        if(parent[u]==u)
+        {
+            return u;
+        }
+        return findd(parent[u]);
+    }
+    void unionn(int u,int v)
+    {
+        int uu=findd(u);
+        int vv=findd(v);
+        if(uu==vv)
+        {
+            return;
+        }
+        if(size[vv]>size[uu])
+        {
+            size[vv]+=size[uu];
+            parent[uu]=parent[vv];
+        }
+        else
+        {
+            size[uu]+=size[vv];
+            parent[vv]=parent[uu];
+        }
+    }
+};
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n=edges.size();
+        disjoint ds(n);
+        vector<int>res;
+        for(int i=0;i<n;i++)
+        {
+            int u=edges[i][0];
+            int v=edges[i][1];
+            int p=ds.findd(u);
+            int r=ds.findd(v);
+            if(p!=r)
+            {
+                ds.unionn(p,r);
+            }
+            else
+            {
+                res.push_back(u);
+                res.push_back(v);
+            }
+        }
+        return res;
+    }
+};
