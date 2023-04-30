@@ -1,0 +1,55 @@
+class Solution {
+public:
+void dfs(int u,unordered_map<int,vector<int>>ump,vector<bool>&vis)
+{
+    vis[u]=true;
+    for(auto &v:ump[u])
+    {
+        if(!vis[v])
+        {
+            dfs(v,ump,vis);
+        }
+    }
+}
+bool check(string &a, string &b)
+{
+    int diff=0;
+    int m=a.length();
+    for(int i=0;i<m;i++)
+    {
+        if(a[i]!=b[i])
+        {
+            diff++;
+        }
+       
+    }
+     return diff==2 || diff==0;
+}
+    int numSimilarGroups(vector<string>& strs) {
+        int n = strs.size();
+        unordered_map<int,vector<int>>ump;
+        for(int i=0;i<strs.size();i++)
+        {
+            for(int j=i+1;j<strs.size();j++)
+            {
+                if(check(strs[i],strs[j]))
+                {
+                  //  cout<<i<<" "<<j<<endl;
+                    ump[i].push_back(j);
+                    ump[j].push_back(i);
+                }
+            }
+        }
+        vector<bool>vis(strs.size(),false);
+        int count=0;
+        for(int i=0;i<strs.size();i++)
+        {
+            if(!vis[i])
+            {
+            dfs(i,ump,vis);
+            count++;
+            }
+        }
+        return count;
+    }
+};
