@@ -1,0 +1,32 @@
+1.negative cycle
+2.directed graph
+ vector<int> bellman_ford(int V, vector<vector<int>>& edges, int S) {
+        // Code here
+        vector<int>dis(V,1e8);
+        dis[S]=0;
+        for(int i=1;i<=V-1;i++)
+        {
+            for(auto edge:edges)
+            {
+                int u=edge[0];
+                int v=edge[1];
+                int w=edge[2];
+                if(dis[u]!=1e8 &&dis[v]>dis[u]+w)
+                {
+                    dis[v]=dis[u]+w;
+                }
+            }
+        }
+        //detection of negative cycle
+        for(auto edge:edges)
+            {
+                int u=edge[0];
+                int v=edge[1];
+                int w=edge[2];
+                if(dis[u]!=1e8 &&dis[v]>dis[u]+w)
+                {
+                    return {-1};
+                }
+            }
+        return dis;
+    }
